@@ -12,19 +12,6 @@ export default function Hora() {
     return () => clearInterval(intervalId);
   }, []);
 
-  useEffect(() => {
-    const getAllDate = async () => {
-      try {
-      const response = await fetch("https://spp.newsan.com.ar/api/PlanProd/GetAllByLineaIdSinFiltro/2")
-      const data = response.json()
-      console.log(data)
-    } catch (error) {
-      console.log(error)
-    }
-    }
-    getAllDate()
-  }, [])
-
   return (
     <div>
       <h2 className="text-5xl bg-black ">
