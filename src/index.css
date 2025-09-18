@@ -3,14 +3,39 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 👇 AÑADE ESTO: Asegura que html ocupe toda la altura de la ventana */
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0; /* Asegúrate de quitar padding también */
+  min-height: 100vh; /* Ocupa al menos toda la altura visible */
+  width: auto;
+
+  /* Si quieres que el contenido se expanda naturalmente (no centrado forzado) */
+  display: flex;
+  flex-direction: column; /* O "row" si prefieres horizontal */
+  /* place-items: center; ← ¡COMENTA O ELIMINA ESTO! */
+  justify-content: flex-start; /* Empieza desde arriba */
+  align-items: stretch; /* Ocupa todo el ancho disponible */
+
+  /* Opcional: color de fondo coherente */
+  background-color: inherit; /* O usa un color fijo si prefieres */
+}
+
+/* Si quieres que un contenedor interno (como #root o .App) también ocupe toda la pantalla */
+#root, .App {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 a {
@@ -20,14 +45,6 @@ a {
 }
 a:hover {
   color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
