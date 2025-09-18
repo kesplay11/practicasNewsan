@@ -5,9 +5,9 @@ import "./App.css"
 function App() {
 
   return (
-    <div className='app'>
+    <div className='flex flex-1 flex-col bg-green-800 min-h-0 h-screen w-full'>
       <Cabecera/>
-      <div className="contenedor">
+      <div className="flex flex-col">
         <FilaEstatica/>
         <ListadoFilas/>
       </div>

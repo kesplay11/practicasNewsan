@@ -1,10 +1,10 @@
 export default function FilaEstatica(){
     return(
-        <div className="fila-estatica">
-            <h2>Dato 1</h2>
-            <h2>Dato 2</h2>
-            <h2>Dato 3</h2>
-            <h2>Dato 4</h2>
+        <div className="flex flex-row items-center justify-around p-4 bg-black text-white text-xl">
+            <h2>MODELO</h2>
+            <h2>IM</h2>
+            <h2>PROD</h2>
+            <h2>CLI</h2>
         </div>
     )
 }
