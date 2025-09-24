@@ -1,9 +1,10 @@
-interface MiComponenteHijosProps{
-    dato1: string;
-    dato2: number;
-    dato3: number;
-    dato4: number;
-    id: number
+export interface MiComponenteHijosProps {
+  idProduccion: number;
+  codigoModelo: number;
+  capacidad: number;
+  cantidad: number;
+  cantidadRechazos: number;
+  cantidadProducida?: string;
 }
 
 
@@ -11,10 +12,10 @@ interface MiComponenteHijosProps{
 export default function Fila(props : MiComponenteHijosProps){
     return(
         <div className="flex flex-row items-center justify-around bg-green-400 p-4 mx-0 my-[10px] w-full text-xl">
-            <p>{props.dato1}</p>
-            <p>{props.dato2}</p>
-            <p>{props.dato3}</p>
-            <p>{props.dato4}</p>
+            <p className="max-w-[20px]">{props.codigoModelo}</p>
+            <p className="max-w-[20px]">{props.cantidadProducida}</p>
+            <p className="max-w-[20px]">{props.cantidad}</p>
+            <p className="max-w-[20px]">{props.cantidadRechazos}</p>
         </div>
     )
 }
