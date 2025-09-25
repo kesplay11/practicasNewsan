@@ -1,6 +1,5 @@
 import Cabecera from  './components/Cabecera';
 import ListadoFilas from './components/ListadoFilas'
-import FilaEstatica from './components/FilaEstatica'
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -13,7 +12,6 @@ function App() {
 
       <Cabecera/>
       <div className="flex flex-col bg-green-800">
-        <FilaEstatica/>
         <ListadoFilas/>
       </div>
       

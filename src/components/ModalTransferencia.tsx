@@ -70,7 +70,7 @@ export default function ModalTransferencia({
   const selectedCodigo = watch('codigoModelo');
   const selectedItem = datos.find(item => item.codigoModelo === selectedCodigo);
 
-  const onSubmit = ( FormValues) => {
+  const onSubmit = ( data : FormValues ) => {
     if (!selectedItem || data.cantidadRestar === null) return;
 
     const imValue = Number(selectedItem.cantidadProducida ?? '0');
@@ -213,106 +213,5 @@ export default function ModalTransferencia({
         )}
       </Box>
     </Modal>
-  );
-}
-// components/ListadoFilas.tsx
-
-import { useEffect, useState } from 'react';
-import Fila, { MiComponenteHijosProps } from './Fila';
-import FilaEstatica from './FilaEstatica';
-import service from '../services/services';
-import ModalTransferencia from './ModalTransferencia';
-
-export default function ListadoFilas() {
-  const [datos, setDatos] = useState<MiComponenteHijosProps[]>([]);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await service.getAllByLineaIdSinFiltro(2);
-        setDatos(data);
-      } catch (error) {
-        console.error("Error al cargar datos:", error);
-      }
-    }
-    fetchData();
-  }, []);
-
-  const handleConfirm = (updatedItem: MiComponenteHijosProps) => {
-    setDatos(prev =>
-      prev.map(item =>
-        item.idProduccion === updatedItem.idProduccion ? updatedItem : item
-      )
-    );
-  };
-
-  return (
-    <div className="w-full bg-green-800 p-4">
-      {/* ¡El encabezado tiene el botón IM! */}
-      <FilaEstatica onImClick={() => setModalOpen(true)} />
-
-      {datos.map((item) => (
-        <Fila key={item.idProduccion} {...item} />
-      ))}
-
-      <ModalTransferencia
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        datos={datos}
-        onConfirm={handleConfirm}
-      />
-    </div>
-  );
-}
-
-// components/Fila.tsx
-
-export interface MiComponenteHijosProps {
-  idProduccion: number;
-  codigoModelo: number;
-  capacidad: number;          // ← no se muestra
-  cantidad: number;           // ← PROD
-  cantidadRechazos: number;   // ← CLI
-  cantidadProducida?: string; // ← IM (viene como string)
-}
-
-export default function Fila(props: MiComponenteHijosProps) {
-  return (
-    <div className="flex flex-row items-center justify-around bg-green-400 p-4 mx-0 my-[10px] w-full text-xl">
-      <p className="max-w-[20px]">{props.codigoModelo}</p>
-      <p className="max-w-[20px]">{props.cantidadProducida ?? '0'}</p> {/* IM */}
-      <p className="max-w-[20px]">{props.cantidad}</p>                {/* PROD */}
-      <p className="max-w-[20px]">{props.cantidadRechazos}</p>        {/* CLI */}
-    </div>
-  );
-
-
-
-
-  // components/FilaEstatica.tsx
-
-import React from 'react';
-
-interface FilaEstaticaProps {
-  onImClick?: () => void;
-}
-
-export default function FilaEstatica({ onImClick }: FilaEstaticaProps) {
-  return (
-    <div className="flex flex-row items-center justify-around p-4 bg-black text-white text-xl">
-      <h2>MODELO</h2>
-      
-      {/* ¡Este es el botón que abre el modal! */}
-      <h2 
-        className="cursor-pointer underline hover:text-blue-300"
-        onClick={onImClick}
-      >
-        IM
-      </h2>
-      
-      <h2>PROD</h2>
-      <h2>CLI</h2>
-    </div>
   );
 }
