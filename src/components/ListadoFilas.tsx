@@ -1,20 +1,22 @@
 // components/ListadoFilas.tsx
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Fila from './Fila';
 import type { MiComponenteHijosProps } from './Fila';
 import FilaEstatica from './FilaEstatica';
 import service from '../services/services';
+
 import ModalTransferencia from './ModalTransferencia';
-import { Button, ButtonGroup } from '@mui/material';
+import {  ButtonGroup } from '@mui/material';
+
+import BotonDinamico from './BotonDinamico';
 import React from 'react';
+
 export default function ListadoFilas() {
   const [datos, setDatos] = useState<MiComponenteHijosProps[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [dataLimit, setDataLimit] = useState<MiComponenteHijosProps[]>([]);
 
-
-  
 
   useEffect(() => {
     async function fetchData() {
@@ -31,14 +33,21 @@ export default function ListadoFilas() {
     fetchData();
   }, []);
 
-   const handleClick = (event : React.MouseEvent<HTMLButtonElement>) => {
-    // event.target es el elemento <button> del DOM
-    console.log('Botón clickeado');
-    // Si necesitas algún dato del botón, puedes asociarlo con una prop 'value'
-    const valor = (event.target as HTMLButtonElement).dataset.value as string;
-    const parseo = parseInt(valor);
-    setDataLimit(datos.slice(0,parseo));
-  };
+
+  const buttonValues = useMemo(() => {
+    const total = datos.length;
+    const values = [10, 50 , 100, 200];
+    const dynamicValues = values.filter(val => val < total)
+
+    if(!dynamicValues.includes(total)){
+      dynamicValues.push(total)
+    }
+    return dynamicValues
+  }, [datos.length])
+
+  const handleClick = (limit: number) => {
+     setDataLimit(datos.slice(0, limit))
+   };
 
   const handleConfirm = (updatedItem: MiComponenteHijosProps) => {
     setDatos(prev =>
@@ -58,38 +67,13 @@ export default function ListadoFilas() {
       ))}
 
       <ButtonGroup variant="contained" aria-label="Basic button group">
-        <Button
-        data-value="10"
-        onClick={handleClick}
-        >10</Button>
-        <Button
-          data-value="20"
-          onClick={handleClick}
-        >20</Button>
-        <Button 
-          data-value="70"
-          onClick={handleClick}
-        >70</Button>
-        <Button
-          data-value="80"
-          onClick={handleClick}
-        >80</Button>
-        <Button
-          data-value="100"
-          onClick={handleClick}
-        >100</Button>
-        <Button
-          data-value="120"
-          onClick={handleClick}
-        >120</Button>
-        <Button
-          data-value="140"
-          onClick={handleClick}
-        >140</Button>
-        <Button
-          data-value="280"
-          onClick={handleClick}
-        >280</Button>
+        {buttonValues.map((value) => (
+          <BotonDinamico
+            key={value}
+            value={value}
+            onClick={() => handleClick(value)}
+          />
+        ))}
       </ButtonGroup>
 
 
