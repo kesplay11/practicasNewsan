@@ -10,7 +10,7 @@ import ModalTransferencia from './ModalTransferencia';
 import {  ButtonGroup } from '@mui/material';
 
 import BotonDinamico from './BotonDinamico';
-import React from 'react';
+
 
 export default function ListadoFilas() {
   const [datos, setDatos] = useState<MiComponenteHijosProps[]>([]);
@@ -36,13 +36,32 @@ export default function ListadoFilas() {
 
   const buttonValues = useMemo(() => {
     const total = datos.length;
-    const values = [10, 50 , 100, 200];
-    const dynamicValues = values.filter(val => val < total)
+    const maxButtons = 10;
+    const baseIncrement = 10;
 
-    if(!dynamicValues.includes(total)){
-      dynamicValues.push(total)
+    if(total <= 50){
+      const smallValues = [10,25].filter(val => val < total) ;
+        if(!smallValues.includes(total)) {
+          smallValues.push(total);
+        }
+        return smallValues
     }
-    return dynamicValues
+
+    let increment = Math.max(baseIncrement, Math.ceil(total / maxButtons));
+
+    const generatedValues: number[] = [];
+    let currentValue = increment;
+
+    while (currentValue < total && generatedValues.length < maxButtons -1){
+      const roundedValue = Math.ceil(currentValue /10 )*10;
+      generatedValues.push(roundedValue);
+      currentValue += increment;
+    }
+    
+    if (!generatedValues.includes(total)) {
+      generatedValues.push(total)
+    }
+    return generatedValues
   }, [datos.length])
 
   const handleClick = (limit: number) => {

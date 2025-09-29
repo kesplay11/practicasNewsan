@@ -5,12 +5,12 @@ class Service{
     private baseUrl:string;
 
     constructor() {
-        this.baseUrl="https://spp.newsan.com.ar/api/PlanProd"
+        this.baseUrl="http://localhost:3000/filas"
     }
 
     public async getAllByLineaIdSinFiltro(lineaID:number) : Promise<any[]>{
         try{
-            const url = `${this.baseUrl}/GetAllByLineaIdSinFiltro/${lineaID}`;
+            const url = `${this.baseUrl}`;
             const response = await axios.get<any[]>(url);
 
             return response.data
