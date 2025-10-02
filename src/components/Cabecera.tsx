@@ -1,4 +1,4 @@
-import Hora from './Hora';
+import Hora from './common/Hora';
 
 export default function Cabecera(){
     return(

@@ -1,22 +1,22 @@
 // components/ListadoFilas.tsx
 
 import { useEffect, useState, useMemo } from 'react';
-import Fila from './Fila';
-import type { MiComponenteHijosProps } from './Fila';
-import FilaEstatica from './FilaEstatica';
+import Fila from './common/Fila';
+import type { MiComponenteHijosProps } from './common/Fila';
+import FilaEstatica from './common/FilaEstatica';
 import service from '../services/services';
-
-import ModalTransferencia from './ModalTransferencia';
+import ModalTransferencia from './modal/ModalTransferencia';
 import {  ButtonGroup } from '@mui/material';
+import BotonDinamico from './common/BotonDinamico';
 
-import BotonDinamico from './BotonDinamico';
+interface ListadoFilasProps {
+  showNotification: (message: string, severity?: 'success' | 'error' | 'warning' | 'info') => void;
+}
 
-
-export default function ListadoFilas() {
+export default function ListadoFilas({showNotification}:ListadoFilasProps) {
   const [datos, setDatos] = useState<MiComponenteHijosProps[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [dataLimit, setDataLimit] = useState<MiComponenteHijosProps[]>([]);
-
 
   useEffect(() => {
     async function fetchData() {
@@ -32,7 +32,6 @@ export default function ListadoFilas() {
     }
     fetchData();
   }, []);
-
 
   const buttonValues = useMemo(() => {
     const total = datos.length;
@@ -57,6 +56,8 @@ export default function ListadoFilas() {
       generatedValues.push(roundedValue);
       currentValue += increment;
     }
+
+    generatedValues.unshift(10);
     
     if (!generatedValues.includes(total)) {
       generatedValues.push(total)
@@ -69,12 +70,14 @@ export default function ListadoFilas() {
    };
 
   const handleConfirm = (updatedItem: MiComponenteHijosProps) => {
-    setDatos(prev =>
+    setDataLimit(prev =>
       prev.map(item =>
         item.idProduccion === updatedItem.idProduccion ? updatedItem : item
       )
     );
+    showNotification('Transferencia realizada con éxito', 'success');
   };
+
 
   return (
     <div className="w-full bg-green-800 p-4">
@@ -82,10 +85,13 @@ export default function ListadoFilas() {
       <FilaEstatica onImClick={() => setModalOpen(true)} />
 
       {dataLimit.map((item) => (
-        <Fila key={item.idProduccion} {...item} />
+        <Fila 
+        key={item.idProduccion} {...item}
+          
+        />
       ))}
-
-      <ButtonGroup variant="contained" aria-label="Basic button group">
+      <div className='flex flex-col bg-green-800 items-center justify-center'>
+        <ButtonGroup variant="contained" aria-label="Basic button group">
         {buttonValues.map((value) => (
           <BotonDinamico
             key={value}
@@ -94,14 +100,16 @@ export default function ListadoFilas() {
           />
         ))}
       </ButtonGroup>
-
-
+      </div>
+    
       <ModalTransferencia
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        datos={datos}
+        datos={dataLimit}
         onConfirm={handleConfirm}
+        showNotification={showNotification}
       />
+
     </div>
   );
 }

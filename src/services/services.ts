@@ -5,8 +5,10 @@ class Service{
     private baseUrl:string;
 
     constructor() {
-        this.baseUrl="http://localhost:3000/filas"
+        this.baseUrl="http://localhost:3000"
     }
+    //https://spp.newsan.com.ar/api/PlanProd
+    ///GetAllByLineaIdSinFiltro/${lineaID}
 
     public async getAllByLineaIdSinFiltro(lineaID:number) : Promise<any[]>{
         try{
