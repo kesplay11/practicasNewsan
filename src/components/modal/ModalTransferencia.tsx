@@ -71,8 +71,10 @@ export default function ModalTransferencia({
     setMensajeExito(
       `Se transfirieron ${cantidadRestar} placas desde IM a ${destinoLabel}. Nuevo valor de IM: ${nuevoIm}`
     );
+    const mensajeFinal:string = `Se transfirieron ${cantidadRestar} placas desde IM a ${destinoLabel}. Nuevo valor de IM: ${nuevoIm}`;
+
     
-    showNotification(mensajeExito, 'success')
+    showNotification(mensajeFinal, 'success')
     setOpenModalConfirm(false);
     setOpenModalExito(true);
   };

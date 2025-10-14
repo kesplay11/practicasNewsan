@@ -16,14 +16,11 @@ export default function ModalExito({
   message
 }: ModalExitoProps) {
   return (
-
     <Dialog
       open={open}
       onClose={onCerrarTodo}
       aria-labelledby="modal-exito-title"
     >
-      
-
       <DialogTitle id="modal-exito-title">
         ¡Operación exitosa!
       </DialogTitle>

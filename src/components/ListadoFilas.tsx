@@ -87,7 +87,6 @@ export default function ListadoFilas({showNotification}:ListadoFilasProps) {
       {dataLimit.map((item) => (
         <Fila 
         key={item.idProduccion} {...item}
-          
         />
       ))}
       <div className='flex flex-col bg-green-800 items-center justify-center'>
