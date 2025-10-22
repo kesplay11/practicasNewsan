@@ -10,6 +10,9 @@ class Service{
     //https://spp.newsan.com.ar/api/PlanProd
     ///GetAllByLineaIdSinFiltro/${lineaID}
 
+
+
+    ///averg
     public async getAllByLineaIdSinFiltro(lineaID:number) : Promise<any[]>{
         try{
             const url = `${this.baseUrl}/GetAllByLineaIdSinFiltro/${lineaID}`;
