@@ -29,9 +29,9 @@ class Service{
         }
     }
 
-    public async put(idProduccion:number) : Promise<any>{
+    public async putCLIContenedorItemsRecepcionBloq(idProduccion:number) : Promise<any>{
         try{
-            const url = `${this.baseUrl}/put/${idProduccion}`;
+            const url = `${this.baseUrl}/putCLIContenedorItemsRecepcionBloq/${idProduccion}`;
             const response = await axios.get<any[]>(url);
 
             return response.data
