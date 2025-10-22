@@ -10,7 +10,7 @@ class Service{
     //https://spp.newsan.com.ar/api/PlanProd
     ///GetAllByLineaIdSinFiltro/${lineaID}
 
-    public async getAllByLineaIdSinFiltro(lineaID:number) : Promise<any[]>{
+    public async getAllByLineaIdSinFiltro(lineaID: number) : Promise<any[]>{
         try{
             const url = `${this.baseUrl}/GetAllByLineaIdSinFiltro/${lineaID}`;
             const response = await axios.get<any[]>(url);
