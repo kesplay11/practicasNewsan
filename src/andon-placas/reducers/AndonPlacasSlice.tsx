@@ -5,7 +5,7 @@ import { GenericSlice } from "app/Middleware/reducers/genericSlice";
 // Asumiendo que IIniState está disponible en esta ruta
 import { IIniState } from "app/models"; 
 
-import { andonPlacasService } from "app/services/andonPlacas.service"; // Importación del servicio mejorado
+import { AndonPlacasServices } from "../services/AndonPlacas.services"; // Importación del servicio mejorado
 import type { IAndonPlacas } from "../models/IAndonPlacas";
 // Asumiendo que errorNotification está disponible en esta ruta
 import { errorNotification } from "../HelperMidleware/errorNotifications"; 
@@ -18,12 +18,12 @@ export interface AndonPlacasState extends IIniState<IAndonPlacas> {
 }
 
 // 2. Definición del Servicio
-const service = andonPlacasService; 
+const andonPlacasServices = new AndonPlacasServices(); 
 
 // 3. Clase del Slice (Hereda de GenericSlice para acciones base)
 class AndonPlacasClassSlice extends GenericSlice<IAndonPlacas> {
-    constructor(private andonPlacasService: typeof service) {
-        super('AndonPlacas', andonPlacasService);
+    constructor(private service: AndonPlacasServices) {
+        super('AndonPlacas', service);
     }
 
     // ACCIÓN 1: Obtener todas las placas (POST/GET Lógico)
@@ -32,7 +32,7 @@ class AndonPlacasClassSlice extends GenericSlice<IAndonPlacas> {
         `AndonPlacas/GetAllPlaquesForSectorsAndForModels`, 
         async (_, info) => {
             // Se envuelve la llamada al servicio en errorNotification
-            return await errorNotification(() => this.andonPlacasService.getAllPlaquesForSectorsAndForModels(), info);
+            return await errorNotification(() => this.service.getAllPlaquesForSectorsAndForModels(), info);
         }
     );
 
@@ -41,7 +41,7 @@ class AndonPlacasClassSlice extends GenericSlice<IAndonPlacas> {
     PutCLIContenedorItemsRecepcionBloq = createAsyncThunk<IAndonPlacas, number>(
         `AndonPlacas/PutCLIContenedorItemsRecepcionBloq`, 
         async (idProduccion, info) => {
-            return await errorNotification(() => this.andonPlacasService.putCLIContenedorItemsRecepcionBloq(idProduccion), info);
+            return await errorNotification(() => this.service.putCLIContenedorItemsRecepcionBloq(idProduccion), info);
         }
     );
 
@@ -50,7 +50,7 @@ class AndonPlacasClassSlice extends GenericSlice<IAndonPlacas> {
 }
 
 // 4. Instancia de la Clase del Slice para exportar las acciones
-export const AndonPlacasSliceRequest = new AndonPlacasClassSlice(service);
+export const AndonPlacasSliceRequest = new AndonPlacasClassSlice( andonPlacasServices);
 
 // 5. Estado Inicial Específico
 const inititalState: AndonPlacasState = {
