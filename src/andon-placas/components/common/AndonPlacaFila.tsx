@@ -1,4 +1,4 @@
-import type IAndonPlacas from "../../models/IAndonPlaca";
+import type IAndonPlacas from "../../models/IAndonPlacas";
 
 export default function Fila(props: IAndonPlacas) {
   return (

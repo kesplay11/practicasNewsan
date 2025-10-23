@@ -1,4 +1,4 @@
-export default interface IAndonPlacas{
+export interface IAndonPlacas{
     idProduccion: number;
     codigoModelo: number;
     capacidad: number;          // ← no se muestra

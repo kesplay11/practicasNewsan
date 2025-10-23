@@ -1,14 +1,13 @@
 import { AxiosError } from "axios";
 import axios from 'axios';
+import type {IAndonPlacas} from "../models/IAndonPlacas";
 
-class Service{
+class AndonPlacasServices{
     private baseUrl:string;
 
     constructor() {
         this.baseUrl="https://spp.newsan.com.ar/api/CLIContenedorItemsRecepcionBloq"
     }
-    //https://spp.newsan.com.ar/api/PlanProd
-    ///GetAllByLineaIdSinFiltro/${lineaID}
 
     public async getAllPlaquesForSectorsAndForModels() : Promise<any[]>{
         try{
@@ -29,10 +28,10 @@ class Service{
         }
     }
 
-    public async putCLIContenedorItemsRecepcionBloq(idProduccion:number) : Promise<any>{
+    public async putCLIContenedorItemsRecepcionBloq(idProduccion:number) : Promise<IAndonPlacas>{
         try{
             const url = `${this.baseUrl}/putCLIContenedorItemsRecepcionBloq/${idProduccion}`;
-            const response = await axios.get<any[]>(url);
+            const response = await axios.put<IAndonPlacas>(url);
 
             return response.data
         }
@@ -50,5 +49,5 @@ class Service{
     }
 }
 
-const service = new Service();
+const service = new AndonPlacasServices();
 export default service;
