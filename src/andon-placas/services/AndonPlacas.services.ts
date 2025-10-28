@@ -1,8 +1,7 @@
 import axios from "axios";
 // Asumo que GenericService existe en tu proyecto, como en el ejemplo que me diste.
 import { GenericService } from "app/services/generic.service"; 
-import { IAndonPlacas } from "../models/IAndonPlaca"; // Usar el modelo mejorado
-
+import type { IAndonPlacas } from "../models/IAndonPlacas";
 // Usar el patrón de URL base de tu código de referencia
 const API_BASE_URL = process.env.REACT_APP_API_URL;
 
