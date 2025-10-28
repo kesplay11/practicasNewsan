@@ -11,7 +11,7 @@ export interface MiComponenteHijosProps {
 
 export default function Fila(props: MiComponenteHijosProps) {
   return (
-    <div className="flex flex-row items-center justify-around bg-green-400 p-4 mx-0 my-[10px] w-full text-xl">
+    <div className="flex flex-row items-center justify-around bg-green-400 p-4 mx-0 my-[10px] w-full text-3xl">
       <p className="max-w-[20px]">{props.codigoModelo}</p>
       <p className="max-w-[20px]">{props.cantidadProducida ?? '0'}</p> {/* IM */}
       <p className="max-w-[20px]">{props.cantidad}</p>                {/* PROD */}

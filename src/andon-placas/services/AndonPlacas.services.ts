@@ -33,7 +33,7 @@ export class AndonPlacasServices extends GenericService<IAndonPlacas> {
     public async putCLIContenedorItemsRecepcionBloq(idProduccion: number): Promise<IAndonPlacas> {
         try {
             //Preguntar a Stephano si la direccion del endpoint esta bien, o hay que elminarla
-            const url = `${API_BASE_URL}/${this.Url}/putCLIContenedorItemsRecepcionBloq/${idProduccion}`;
+            const url = `${API_BASE_URL}/${this.Url}/CLIContenedorItemsRecepcionBloq/${idProduccion}`;
             // PUT sin cuerpo (body) es común para acciones de "cambiar estado" o "confirmar".
             const response = await axios.put<IAndonPlacas>(url);
             return response.data;
