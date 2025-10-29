@@ -7,11 +7,6 @@ interface FilaProps extends IAndonPlacas {
 
 export default function Fila(props: FilaProps) {
 
-    const handleClick = () => {
-        // Llama a la función de actualización pasando el ID de la placa
-        props.onUpdate(props.idProduccion);
-    };
-
     return (
         <div 
             className="flex flex-row items-center justify-around bg-green-400 p-4 mx-0 my-[10px] w-full text-xl cursor-pointer hover:bg-green-500 transition-colors"

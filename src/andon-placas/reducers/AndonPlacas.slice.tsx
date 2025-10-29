@@ -1,26 +1,48 @@
-import { createSlice, createAsyncThunk, combineReducers } from "@reduxjs/toolkit";
-import type { IAndonPlacas  } from "../models/IAndonPlacas";
-import { andonPlacasService, AndonPlacasServices } from "../services/AndonPlacas.services";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import type { IAndonPlacas } from "../models/IAndonPlacas";
+import { AndonPlacasServices } from "../services/AndonPlacas.services";
+import { errorNotification } from "";
+import { IInitState } from "";
 
-const  errorNotification = (message : string) => console.error('Algo paso mal en el slice: ',  message);
+const andonPlacasService = new AndonPlacasServices();
 
-export interface AndonPlacasState  {
-    dataAll: IAndonPlacas[];
-    loading:  "idle" | "pending" | "succeded" | "failed" | null;
-    error: string | null
+class AndonPlacasClass {
+    private service: AndonPlacasServices;
+    constructor( service: AndonPlacasServices) {
+        this.service = service;
+    }
+
+    getAllPlaquesForSectorsAndForModels = createAsyncThunk<IAndonPlacas[]>(
+        `AndonPlacas/GetAllPlaquesForSectorsAndForModels`, 
+        async (_, info) => {
+            return await errorNotification(
+                () => this.service.getAllPlaquesForSectorsAndForModels(), 
+                info
+            );
+        }
+    )
 }
 
- const initialState: AndonPlacasState = {
-    dataAll: [],
-    loading: null,
-    error: null
- }
+export const AndonPlacasSliceRequest = new AndonPlacasClass(andonPlacasService);
 
- export const GetAllPlaquesForSectorsAndForModels = createAsyncThunk(
-    'andonPlacas/getAll',
-    async ({_rejectWithValue}) => {
-        try {
-            const response = andonPlacasService.getAllPlaquesForSectorsAndForModels();
-        }
-    }
- )
+const initialState: IInitState<IAndonPlacas> = {
+    loading: null,
+    dataAll: [],
+    data: null,
+    object: null
+};
+
+export const AndonPlacasSlice = createSlice({
+    name: "AndonPlacas",
+    initialState: initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(AndonPlacasSliceRequest.getAllPlaquesForSectorsAndForModels.fulfilled, (state, action) => {
+            state.loading = "fulfilled";
+            state.dataAll = action.payload;
+        });
+        builder.addCase(AndonPlacasSliceRequest.getAllPlaquesForSectorsAndForModels.rejected, (state, action) => {
+        state.loading = "rejected";
+        });
+    },
+})

@@ -1,8 +1,6 @@
-export interface IAndonPlacas{
-    idProduccion: number;
-    codigoModelo: number;
-    capacidad: number;          // ← no se muestra
-    cantidad: number;           // ← PROD
-    cantidadRechazos: number;   // ← CLI
-    cantidadProducida?: string; // ← IM (viene como string)
+export interface IAndonPlacas {
+    modelo_id: number;
+    IM: number | string; // Lo definimos como number | string ya que mencionaste que a veces viene como string
+    PROD: number;
+    CLI: number;
 }
