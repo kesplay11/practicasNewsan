@@ -1,11 +1,11 @@
 // import { calendarReducer } from './calendarReducer';
 // import { uiReducer } from "./uiReducer";
-import { contadorSlice } from "../andon-placas/reducers/test";
+import { combineReducers } from "@reduxjs/toolkit";
+import { AndonPlacasSlice } from "../andon-placas/reducers/AndonPlacas.slice";
 
 
 // import { authenticationSlice } from "./AuthenticationSlice";
 
-export const rootReducer = {
-  //------andon-placas
-    contador: contadorSlice
-};
+export const rootReducer = combineReducers({
+  andonPlacas: AndonPlacasSlice.reducer
+})

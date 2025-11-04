@@ -1,25 +1,29 @@
 import axios from "axios";
 // Asumo que GenericService existe en tu proyecto, como en el ejemplo que me diste.
-import { GenericService } from "app/services/generic.service"; 
+// import { GenericService } from "app/services/generic.service"; 
 import type { IAndonPlacas } from "../models/IAndonPlacas";
 // Usar el patrón de URL base de tu código de referencia
-const API_BASE_URL = process.env.REACT_APP_API_URL;
+const API_BASE_URL =  "https://spp.newsan.com.ar";
+
 
 // Heredamos de GenericService aunque solo implementemos métodos específicos,
 // manteniendo la coherencia estructural.
-export class AndonPlacasServices extends GenericService<IAndonPlacas> {
+export class AndonPlacasServices  {
     // URL relativa que se concatena con API_BASE_URL.
     Url = "CLIContenedorItemsRecepcionBloq"; 
 
     constructor() {
-        super("CLIContenedorItemsRecepcionBloq"); // Nombre base para la URL
+        ("CLIContenedorItemsRecepcionBloq"); // Nombre base para la URL
     }
 
     // 1. OBTENER TODAS LAS PLACAS (GET/POST Lógico)
     public async getAllPlaquesForSectorsAndForModels(): Promise<IAndonPlacas[]> {
         // Usamos async/await directamente sin envolver en new Promise, es más moderno y limpio.
         try {
-            const url = `${API_BASE_URL}/${this.Url}/GetAllPlaquesForSectorsAndForModels`;
+            console.log(API_BASE_URL);
+            
+            const url = `${API_BASE_URL}/api/${this.Url}/GetAllPlaquesForSectorsAndForModels`;
+            console.log(url)
             const response = await axios.get<IAndonPlacas[]>(url);
             return response.data;
         } catch (error) {

@@ -1,19 +1,16 @@
-// Fila que actúa como encabezado
-interface FilaEstaticaProps {
-    onImClick: () => void;
-}
-export default function FilaEstatica({ onImClick }: FilaEstaticaProps) {
+// Fila que actúa como encabezado (AndonPlacasFilaEstatica)
+export default function AndonPlacasFilaEstatica() {
     return (
-        <div className="flex flex-row items-center justify-around bg-green-900 p-4 w-full text-xl font-bold text-white rounded-t-lg shadow-xl">
-            <p className="max-w-[200px]">MODELO</p>
-            <p className="max-w-[150px] text-center">IM (Producido)</p>
-            <p className="max-w-[150px] text-center">PROD (Objetivo)</p>
-            <button 
-                className="max-w-[150px] text-center cursor-pointer bg-red-600 hover:bg-red-700 p-1 rounded transition-colors"
-                onClick={onImClick}
-            >
-                CLI (Rechazos)
-            </button>
+        <div 
+            // Usamos 'grid' y definimos 4 columnas. 
+            // Las proporciones de 'grid-cols-[2fr_1fr_1fr_1fr]'
+            // reflejan aproximadamente los anchos 200px vs 150px.
+            className="grid grid-cols-[1fr_1fr_1fr_1fr] items-center p-4 w-full text-5xl font-bold text-white bg-black"
+        >
+            <p className="text-center">MODELO</p>
+            <p className="text-center">IM</p>
+            <p className="text-center">PRODUCCION</p>
+            <p className="text-center">CLI</p>
         </div>
     );
 }
