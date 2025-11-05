@@ -1,104 +1,120 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+// Mantenemos la estructura de la ruta, asumiendo que debe ser correcta:
 import { AndonPlacasSliceRequest } from "../reducers/AndonPlacas.slice"; 
-import { useAppDispatch, useAppSelector } from "../../store/store";
+import { useAppDispatch, useAppSelector } from "../../store/store"; 
 
-import  AndonPlacasFila  from "../components/common/AndonPlacasFila";
+import AndonPlacasFila from "../components/common/AndonPlacasFila";
 import type { IAndonPlacas } from "../models/IAndonPlacas"; 
 import { unwrapResult } from "@reduxjs/toolkit";
 
-
+// Intervalo de refresco en milisegundos (10 segundos)
 const REFRESH_INTERVAL = 10000;
 
 
 export default function AndonPlacasListadoFilas(){
-   let datas = 
-  [
-  {
-    "modelo_id": "PHS32HA4CN",
-    "IM": 5000,
-    "PROD": 0,
-    "CLI": 0
-  },
-  {
-    "modelo_id": "THS25HA4CN",
-    "IM": 1000,
-    "PROD": 3000,
-    "CLI": 64
-  },
-  {
-    "modelo_id": "S4NW12JA31A",
-    "IM": 5000,
-    "PROD": 0,
-    "CLI": 0
-  },
-  {
-    "modelo_id": "SAS50HA3AN",
-    "IM": 4500,
-    "PROD": 500,
-    "CLI": 0
-  },
-  {
-    "modelo_id": "PHW32CA3BN",
-    "IM": 100,
-    "PROD": 4868,
-    "CLI": 32
-  }
-]
-    // const dispatch = useAppDispatch();
-    // const { dataAll, loading } = useAppSelector((state) => state.andonPlacas)
 
-    // const getAll = async () => {
-    //     try {
-    //         const response = unwrapResult(await dispatch(AndonPlacasSliceRequest.getAllPlaquesForSectorsAndForModels()))
-    //         if (response) {
-    //             console.log(response)
-    //         }
-    //     } catch(error) {
-    //         console.log(error)
-    //     }
-    // }
+    const dispatch = useAppDispatch();
+    // Desestructuramos solo dataAll y loading
+    const { dataAll, loading } = useAppSelector((state) => state.andonPlacas); 
+    
+    // Estado local para manejar si ocurrió un error en la última llamada
+    const [hasError, setHasError] = useState(false); 
+    
+    // Datos a renderizar
+    const datas: IAndonPlacas[] = dataAll || [];
 
-    // useEffect(()=>{
-    //     if (loading === true){
-    //         console.log("Despachacho accion para traer estados, osea cargar placas");
-    //         getAll()
-    //     }
+    /**
+     * Función que despacha la acción para obtener todas las placas.
+     * Gestiona el estado de error local.
+     */
+    const getAll = async () => {
+        try {
+            // Reiniciamos el estado de error antes de la llamada
+            setHasError(false);
             
-    // },[dispatch])
+            // Despachamos la acción y manejamos el resultado
+            const resultAction = await dispatch(AndonPlacasSliceRequest.getAllPlaquesForSectorsAndForModels());
+            const response = unwrapResult(resultAction);
 
-    // if(loading === true){
-    //     return(
-    //     <div>
-    //         <p>Cargando placas...</p>
-    //     </div>
-    //     )
-    // }
+            if (response) {
+                console.log("Datos de placas actualizados:", response.length, "modelos.");
+            }
+        } catch(err) {
+            console.error("Error al despachar acción:", err);
+            // Registramos el error localmente si falla la llamada
+            setHasError(true); 
+        }
+    }
 
-    // if(!loading){
-    //     return(
-    //     <div>
-    //         <p>Error al cargar placas. Intente recargar</p>
-    //     </div>)
-    // }
+    // --- EFECTO 1: Lógica de Polling (setInterval) ---
+    useEffect(() => {
+        // Ejecutamos la primera llamada inmediatamente al montar el componente
+        getAll();
+
+        // Configuramos el intervalo
+        const intervalId = setInterval(() => {
+            console.log(`Polling: Despachando acción cada ${REFRESH_INTERVAL / 1000} segundos.`);
+            // Llamamos a getAll en cada intervalo
+            getAll(); 
+        }, REFRESH_INTERVAL);
+
+        // Función de limpieza: se ejecuta al desmontar el componente o antes de re-ejecutar el useEffect
+        return () => {
+            console.log("Limpiando intervalo de polling.");
+            clearInterval(intervalId);
+        };
+        
+        // La dependencia en 'dispatch' es para asegurar que el intervalo se reinicie si el dispatch cambia
+    }, [dispatch]);
 
 
+    // --- LÓGICA DE FLUJO DE CONTROL Y RENDERIZADO ---
+    
+    // 1. Mostrar cargando si está en proceso de carga inicial y no hay datos previos
+    if(loading && datas.length === 0){
+        return(
+            <div className="p-8 text-center text-4xl text-blue-500 font-semibold">
+                Cargando placas...
+            </div>
+        )
+    }
+
+    // 2. Mostrar error si no hay datos y el estado local 'hasError' es true
+    if(hasError && datas.length === 0){
+        return(
+            <div className="p-8 text-center text-4xl text-red-500 font-semibold">
+                Error al cargar placas. Intente recargar
+            </div>
+        )
+    }
+    
+    // 3. Renderizado del Contenido
     return(
-        <div className="py-[3px] flex flex-col items-center w-full overflow-y-hidden">
-                
-                {datas.length > 0 ? (
-                    // 4. Mapeo del Array
-                    datas.map((placa: IAndonPlacas) => (
+        <div className="py-[3px] flex flex-col items-center w-full w-full overflow-y-hidden">
+            
+            {datas.length > 0 ? (
+                <div className="w-full overflow-y-hidden">
+                    {/* Mapeo del Array dataAll (datas) */}
+                    {datas.map((placa: IAndonPlacas) => (
                         <AndonPlacasFila 
-                            key={placa.modelo_id} 
-                            {...placa} // Pasa todas las propiedades de IAndonPlacas 
+                            // Usamos el modelo como key si es único y estable
+                            key={placa.modelo} 
+                            {...placa}
                         />
-                    ))
-                ) : (
-                    <div className="p-8 text-center text-gray-500">
-                        No se encontraron placas de producción.
-                    </div>
-                )}
+                    ))}
+                </div>
+            ) : (
+                <div className="p-8 text-center text-gray-500 text-3xl">
+                    No se encontraron placas de producción.
+                </div>
+            )}
+            
+            {/* Opcional: Indicador de carga durante el polling (si ya hay datos en pantalla) */}
+            {loading && datas.length > 0 && (
+                <div className="absolute top-2 right-2 p-2 rounded-lg bg-blue-100 border border-blue-300 text-sm text-blue-800 animate-pulse transition-opacity duration-500">
+                    Actualizando datos...
+                </div>
+            )}
         </div>
     )
 }
-

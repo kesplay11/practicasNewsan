@@ -11,10 +11,10 @@ export default function AndonPlacasFila(props: FilaProps) {
         <div 
             className="grid grid-cols-[1fr_1fr_1fr_1fr] items-center p-4 w-full text-5xl bg-[#86d4c9] p-4 mx-0 my-[10px] w-full text-3xl font-bold"
         >
-            <p className=" text-center">{props.modelo_id}</p>
-            <p className=" text-center">{props.IM ?? '0'}</p> {/* IM */}
-            <p className=" text-center">{props.PROD}</p>{/* PROD */}
-            <p className=" text-center">{props.CLI}</p>{/* CLI */}
+            <p className=" text-center">{props.modelo}</p>
+            <p className=" text-center">{props.im ?? '0'}</p> {/* IM */}
+            <p className=" text-center">{props.prod}</p>{/* PROD */}
+            <p className=" text-center">{props.cli}</p>{/* CLI */}
         </div>
     );
 }
